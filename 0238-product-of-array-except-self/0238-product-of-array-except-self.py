@@ -2,30 +2,18 @@ import math
 
 class Solution:
     def productExceptSelf(self, nums: List[int]) -> List[int]:
-        new_list = []
-        left = []
-        right = []
+        n = len(nums)
+        ans = [1] * n
 
-        product = 1
-        for x in range(len(nums)):
-            left.append(product)
-            product *= nums[x]
-        # print(left)
+        # Prefix products
+        for i in range(1, n):
+            ans[i] = ans[i - 1] * nums[i - 1]
 
-        product = 1
-        for x in range(len(nums)-1 , -1 , -1):
-            right.append(product)
-            product *= nums[x]
-        # print(right)
-            
+        prev_suffix = 1
 
-        for x in range(len(nums)):
-            new_list.append(left[x] * right[len(nums) - 1 - x])
+        # Suffix products
+        for i in range(n - 2, -1, -1):
+            prev_suffix *= nums[i + 1]
+            ans[i] *= prev_suffix
 
-        
-
-        
-        
-
-
-        return new_list
+        return ans
