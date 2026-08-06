@@ -1,31 +1,24 @@
 class Solution:
 
-    def get_bit(self, no, index):
-        return (no & (1 << index)) != 0
-
     def isValidSudoku(self, board: List[List[str]]) -> bool:
 
         rows = [0] * 9
-        columns = [0] * 9
-        squares = [0] * 9
+        cols = [0] * 9
+        boxes = [0] * 9
 
-        for row in range(9):
-            for col in range(9):
-
-                if board[row][col] == ".":
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == ".":
                     continue
 
-                val = int(board[row][col]) - 1
+                bit = 1 << (int(board[r][c]) - 1)
+                box = (r // 3) * 3 + c // 3
 
-                square = (row // 3) * 3 + (col // 3)
-
-                if (self.get_bit(rows[row], val)
-                    or self.get_bit(columns[col], val)
-                    or self.get_bit(squares[square], val)):
+                if rows[r] & bit or cols[c] & bit or boxes[box] & bit:
                     return False
 
-                rows[row] |= (1 << val)
-                columns[col] |= (1 << val)
-                squares[square] |= (1 << val)
+                rows[r] |= bit
+                cols[c] |= bit
+                boxes[box] |= bit
 
         return True
